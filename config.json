@@ -1,0 +1,25 @@
+{
+  "feeds": [
+    {
+      "name": "New York Times - Technology",
+      "url": "http://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"
+    },
+    {
+      "name": "New York Times - Bits",
+      "url": "https://bits.blogs.nytimes.com/feed/"
+    },
+    {
+      "name": "Harvard Business School",
+      "url": "http://hbswk.hbs.edu/stories-rss.aspx"
+    },
+    {
+      "name": "WSJ World News",
+      "url": "http://www.wsj.com/xml/rss/3_7085.xml"
+    },
+    {
+      "name": "Economist - Audio",
+      "url":
+        "https://www.economist.com/audio-edition-podcast/zt1N-dTSdetzVLREXN9lbQ/index.xml"
+    }
+  ]
+}
