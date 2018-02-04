@@ -5,10 +5,19 @@ import (
 	"fmt"
 	"github.com/mmcdole/gofeed"
 	"io/ioutil"
+	"net/http"
 )
 
-const FILENAME = "GoFeedMe.widget/config.json"
+// WIDGET_FILENAME is the filename of the config file when used as an ubersicht plugin
+const WIDGET_FILENAME = "GoFeedMe.widget/config.json"
+
+// LOCAL_FILENAME is the filename of the config file when testing locally
+const LOCAL_FILENAME = "./config.json"
+
+// ITEMS_COUNT is the number of RSS feed items to fetch for each source
 const ITEMS_COUNT = 3
+
+const filename = WIDGET_FILENAME
 
 type feed struct {
 	Name string `json:"name"`
@@ -20,6 +29,10 @@ type config struct {
 }
 
 func main() {
+	if offline() {
+		fmt.Println("No network connection. Cannot get RSS feed")
+		return
+	}
 	config := parseConfig()
 	for _, configFeed := range config.Feeds {
 		parsedFeed, err := gofeed.NewParser().ParseURL(configFeed.URL)
@@ -31,6 +44,12 @@ func main() {
 		printHeader(configFeed, parsedFeed)
 		printLinks(parsedFeed)
 	}
+}
+
+func offline() bool {
+	//Chances are if Google's down, the internet is down.
+	_, err := http.Get("http://google.com/")
+	return err != nil
 }
 
 func printHeader(configFeed feed, rssFeed *gofeed.Feed) {
@@ -57,7 +76,7 @@ func printLinks(rssFeed *gofeed.Feed) {
 }
 
 func parseConfig() config {
-	bytes, err := ioutil.ReadFile(FILENAME)
+	bytes, err := ioutil.ReadFile(filename)
 	if err != nil {
 		fmt.Println("unable to parse file:", err)
 		panic(err)
