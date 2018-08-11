@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/bugsnag/bugsnag-go"
 	"github.com/mmcdole/gofeed"
 )
 
@@ -30,14 +31,25 @@ type configuration struct {
 }
 
 func main() {
+	configureBugsnag()
+	defer bugsnag.AutoNotify()
 	if _, err := http.Get("https://google.com/"); err != nil {
 		//Chances are if Google's down, the internet is down.
 		fmt.Println("No network connection. Cannot get RSS feed")
 		return
 	}
+
 	for _, configFeed := range parseConfig(readConfigFile()).Feeds {
 		fetchFeed(configFeed)
 	}
+}
+
+func configureBugsnag() {
+	bugsnag.Configure(bugsnag.Configuration{
+		APIKey:          "47f6b13fc2258ad2d4b1a78766fe00ba",
+		ReleaseStage:    "production",
+		ProjectPackages: []string{"main", "github.com/kinbiko/*"},
+	})
 }
 
 func readConfigFile() []byte {
@@ -60,7 +72,7 @@ func parseConfig(bytes []byte) configuration {
 func fetchFeed(configFeed feed) {
 	parsedFeed, err := gofeed.NewParser().ParseURL(configFeed.URL)
 	if err != nil {
-		fmt.Printf("unable to parse feed, ignoring '%s': %v\n", configFeed.Name, err)
+		bugsnag.Notify(fmt.Errorf("unable to parse feed, ignoring '%s': %v", configFeed.Name, err))
 		return
 	}
 
