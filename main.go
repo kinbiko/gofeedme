@@ -32,6 +32,7 @@ type configuration struct {
 
 func main() {
 	configureBugsnag()
+	defer bugsnag.AutoNotify()
 	if _, err := http.Get("https://google.com/"); err != nil {
 		//Chances are if Google's down, the internet is down.
 		fmt.Println("No network connection. Cannot get RSS feed")
@@ -71,7 +72,7 @@ func parseConfig(bytes []byte) configuration {
 func fetchFeed(configFeed feed) {
 	parsedFeed, err := gofeed.NewParser().ParseURL(configFeed.URL)
 	if err != nil {
-		fmt.Printf("unable to parse feed, ignoring '%s': %v\n", configFeed.Name, err)
+		bugsnag.Notify(fmt.Errorf("unable to parse feed, ignoring '%s': %v", configFeed.Name, err))
 		return
 	}
 
