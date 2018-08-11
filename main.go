@@ -19,7 +19,7 @@ const localFilename = "./config.json"
 // itemCount is the number of RSS feed items to fetch for each source
 const itemCount = 3
 
-const filename = localFilename
+const filename = widgetFilename
 
 type feed struct {
 	Name string `json:"name"`
