@@ -15,11 +15,6 @@
     {
       "name": "WSJ World News",
       "url": "http://www.wsj.com/xml/rss/3_7085.xml"
-    },
-    {
-      "name": "Economist - Audio",
-      "url":
-        "https://www.economist.com/audio-edition-podcast/zt1N-dTSdetzVLREXN9lbQ/index.xml"
     }
   ]
 }
