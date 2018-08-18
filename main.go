@@ -95,7 +95,11 @@ func fetchFeed(configFeed feed) {
 
 func makeLinks(stories []*gofeed.Item) string {
 	str := "<ul>"
-	for _, story := range stories[:itemCount] {
+	count := itemCount
+	if len(stories) < itemCount {
+		count = len(stories) - 1
+	}
+	for _, story := range stories[:count] {
 		str += "<li><a href='" + story.Link + "'>" + story.Title + "</a></li>"
 	}
 	return str + "</ul>"
