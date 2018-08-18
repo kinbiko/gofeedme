@@ -3,6 +3,7 @@ package main
 import (
 	"testing"
 
+	bugsnag "github.com/bugsnag/bugsnag-go"
 	"github.com/mmcdole/gofeed"
 )
 
@@ -36,5 +37,26 @@ func TestMakeLinks(t *testing.T) {
 	got := makeLinks(feeds)
 	if got != expected {
 		t.Errorf("Expected links to be '%s' but were '%s'", expected, got)
+	}
+}
+
+func TestConfiguresBugsnagCorrectly(t *testing.T) {
+	configureBugsnag()
+	c := bugsnag.Config
+	tt := []struct {
+		property string
+		exp      interface{}
+		got      interface{}
+	}{
+		{property: "APIKey", exp: bugsnagAPIKey, got: c.APIKey},
+		{property: "AppType", exp: "Übersicht", got: c.AppType},
+		{property: "AppVersion", exp: version, got: c.AppVersion},
+		{property: "ReleaseStage", exp: "development", got: c.ReleaseStage},
+		{property: "SourceRoot", exp: "/Users/kinbiko/repos/gofeedme", got: c.SourceRoot},
+	}
+	for _, tc := range tt {
+		if tc.got != tc.exp {
+			t.Errorf("Expected bugsnag config parameter '%s' to be '%s' but was '%s'", tc.property, tc.exp, tc.got)
+		}
 	}
 }

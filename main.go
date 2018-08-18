@@ -10,16 +10,25 @@ import (
 	"github.com/mmcdole/gofeed"
 )
 
-// widgetFilename is the filename of the config file when used as an ubersicht plugin
-const widgetFilename = "GoFeedMe.widget/config.json"
+const (
+	// bugsnagAPIKey is the API key for this project on Bugsnag.
+	bugsnagAPIKey = "47f6b13fc2258ad2d4b1a78766fe00ba"
 
-// localFilename is the filename of the config file when testing locally
-const localFilename = "./config.json"
+	// version is the current gofeedme
+	// TODO: extract this from the version of the Github repo when compiling
+	version = "1.0.0"
 
-// itemCount is the number of RSS feed items to fetch for each source
-const itemCount = 3
+	// widgetFilename is the filename of the config file when used as an Übersicht plugin
+	widgetFilename = "GoFeedMe.widget/config.json"
 
-const filename = widgetFilename
+	// localFilename is the filename of the config file when testing locally
+	localFilename = "./config.json"
+
+	// itemCount is the number of RSS feed items to fetch for each source
+	itemCount = 3
+)
+
+var filename = widgetFilename
 
 type feed struct {
 	Name string `json:"name"`
@@ -46,9 +55,13 @@ func main() {
 
 func configureBugsnag() {
 	bugsnag.Configure(bugsnag.Configuration{
-		APIKey:          "47f6b13fc2258ad2d4b1a78766fe00ba",
-		ReleaseStage:    "production",
-		ProjectPackages: []string{"main", "github.com/kinbiko/*"},
+		APIKey:              bugsnagAPIKey,
+		AppType:             "Übersicht",
+		AppVersion:          version,
+		NotifyReleaseStages: []string{"production"},
+		ProjectPackages:     []string{"main", "github.com/kinbiko/*"},
+		ReleaseStage:        "development",                   //TODO: turn into a build flag
+		SourceRoot:          "/Users/kinbiko/repos/gofeedme", //TODO extract programatically
 	})
 }
 
