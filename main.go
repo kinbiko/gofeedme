@@ -16,7 +16,7 @@ const (
 
 	// version is the current gofeedme
 	// TODO: extract this from the version of the Github repo when compiling
-	version = "1.0.0"
+	version = "1.0.1"
 
 	// widgetFilename is the filename of the config file when used as an Übersicht plugin
 	widgetFilename = "GoFeedMe.widget/config.json"
